@@ -1,0 +1,75 @@
+
+
+                   KeyeStudio ESP32 (slim)
+                     
+                                    |3.3V             GND|     
+                                    |EN RESET         D23|    TECHNOLOGIST_CLEAR_LIGHTS_BTN     
+                              SENSOR|D36 VP           D22|    TECHNOLOGIST_EMERGENCY_LIGHTS_BTN
+                              SENSOR|D39 VN       TX0 D01|    
+                                    |D34          RX0 D03|    BLUE_DOOR_OPEN 
+                                    |D35              D21|    TECHNOLOGIST_ORDER_BTN_EXIT
+TECHNOLOGIST_ORDER_BTN_ENTR         |D32              GND|     
+NEW_CART_BTN_ENTR                   |D33              D19|    EXTRACT_NO_TURN_BTN_EXIT     
+GREEN_BTN_BOX_ENTR                  |D25              D18|    EXTRACT_AND_TURN_BTN_EXIT 
+YELLOW_BTN_BOX_ENTR                 |D26        PWM!! D5 |    GREEN_BTN_BOX_EXIT 
+GREEN_ENTR_TOWER                    |D27          TX2 D17|    YELLOW_BTN_BOX_EXIT 
+YELLOW_ENTR_TOWER                   |D14 PWM!!    RX2 D16|    GREEN_EXIT_TOWER 
+RED_ENTR_TOWER                      |D12              D4 |    YELLOW_EXIT_TOWER
+                                    |GND              D0 |    RED_EXIT_TOWER
+DOOR_OPEN_SWITCH                    |D13              D2 |    
+                                    |D09 SD2          D15|    free
+                                    |D10 SD3      SD1 D08|
+                                    |D11 CMD      SD0 D07|
+                                    |VIN 5V       CLK D06|
+                                             USB
+
+
+                          ESP32 USABLE PINS 
+(https://randomnerdtutorials.com/esp32-pinout-reference-gpios/)
+
+                                  GPIO  Input       Output	  Notes
+RED_EXIT_TOWER                    0	    pulled up	  OK	      outputs PWM signal at boot
+                                  1	    TX pin	    OK	      debug output at boot
+                                  2	    OK	        OK	      connected to on-board LED
+BLUE_DOOR_OPEN                    3	    OK	        RX pin	  HIGH at boot
+YELLOW_EXIT_TOWER                 4	    OK	        OK	
+GREEN_BTN_BOX_EXIT                5	    OK	        OK	      outputs PWM signal at boot
+                                  6	    x	          x	        connected to the integrated SPI flash
+                                  7	    x	          x	        connected to the integrated SPI flash
+                                  8	    x	          x	        connected to the integrated SPI flash
+                                  9	    x	          x	        connected to the integrated SPI flash
+                                  10	  x	          x	        connected to the integrated SPI flash
+                                  11	  x	          x	        connected to the integrated SPI flash
+RED_ENTR_TOWER                    12	  OK          OK	      boot fail if pulled high
+DOOR_OPEN_SWITCH                  13	  OK          OK	      
+YELLOW_ENTR_TOWER                 14	  OK          OK	      outputs PWM signal at boot
+free                              15	  OK          OK	      outputs PWM signal at boot
+GREEN_EXIT_TOWER                  16	  OK          OK	      
+YELLOW_BTN_BOX_EXIT               17	  OK          OK	      
+EXTRACT_AND_TURN_BTN_EXIT         18	  OK          OK	      
+EXTRACT_NO_TURN_BTN_EXIT          19	  OK          OK	      
+TECHNOLOGIST_ORDER_BTN_EXIT       21	  OK          OK	      
+TECHNOLOGIST_EMERGENCY_LIGHTS_BTN 22	  OK          OK	      
+TECHNOLOGIST_CLEAR_LIGHTS_BTN     23	  OK          OK	      
+GREEN_BTN_BOX_ENTR                25	  OK          OK	      
+YELLOW_BTN_BOX_ENTR               26	  OK          OK	      
+GREEN_ENTR_TOWER                  27	  OK          OK	      
+TECHNOLOGIST_ORDER_BTN_ENTR       32	  OK          OK	      
+NEW_CART_BTN_ENTR                 33	  OK          OK	      
+                                  34	  OK          		      input only NO PULL-UP/PULL/DOWN RESISTOR
+                                  35	  OK          		      input only NO PULL-UP/PULL/DOWN RESISTOR
+                                  36	  OK          		      input only NO PULL-UP/PULL/DOWN RESISTOR
+                                  39	  OK          		      input only NO PULL-UP/PULL/DOWN RESISTOR
+
+
+
+
+
+
+
+http://www.objgen.com/json
+https://jsonformatter.org/json-minify
+
+https://jsonformatter.org/
+https://arduinojson.org/v6/assistant/
+MODEL:
