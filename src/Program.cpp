@@ -23,15 +23,24 @@ void Program::StartProgram()
         (*it)->disable();
         switch ((*it)->getId())
         {
-
         // TECHNOLOGIST_ORDER_BTN
         case 5:
-            // Sprintln("enable TECHNOLOGIST_ORDER_BTN");
+            // Sprintln("StartProgram() - enable TECHNOLOGIST_ORDER_BTN");
             (*it)->enable();
             break;
         // TECHNOLOGIST_EMERGENCY_LIGHTS_BTN
         case 6:
-            // Sprintln("enable TECHNOLOGIST_EMERGENCY_LIGHTS_BTN");
+            // Sprintln("StartProgram() - enable TECHNOLOGIST_EMERGENCY_LIGHTS_BTN");
+            (*it)->enable();
+            break;
+        // DOOR_OPEN_SWITCH
+        case 7:
+            // Sprintln("StartProgram() - enable DOOR_OPEN_SWITCH");
+            (*it)->enable();
+            break;
+        // DOOR_CLOSED_SWITCH
+        case 8:
+            // Sprintln("StartProgram() - enable DOOR_CLOSED_SWITCH");
             (*it)->enable();
             break;
 
@@ -39,23 +48,29 @@ void Program::StartProgram()
             break;
         }
     }
-    StartAlarm(removeCartSeconds_);
+    CancelTimer();
+    StartTimer(removeCartSeconds_);
 }
 
 void Program::WaitForActionEntrStart(bool extend)
 {
+    //* Disable door switches - no need to do it here, 
+    //* they are disabledallready at  WaitForActionExitStart()
+    // buttons[BID::DOOR_OPEN_SWITCH]->disable();
+    // buttons[BID::DOOR_CLOSED_SWITCH]->disable();
+
     if (!extend)
     {
-        StartAlarm(waitForActionSeconds_);
+        StartTimer(waitForActionSeconds_);
         status_ = ProgramStatuses::PSTATUS::WAIT_FOR_ACTION_TIMER_STARTED_ENTR;
     }
     else
     {
-        StartAlarm(extendedWaitForActionSeconds_);
+        StartTimer(extendedWaitForActionSeconds_);
         status_ = ProgramStatuses::PSTATUS::EXTENDED_WAIT_FOR_ACTION_TIMER_STARTED_ENTR;
     }
 
-    // Enable ENTR товер button Lights
+    // Enable ENTR tower button Lights
     clearAllLightSignals();
     for (auto it = lights.begin(); it != lights.end(); it++)
     {
@@ -68,15 +83,13 @@ void Program::WaitForActionEntrStart(bool extend)
             (*it)->on();
             if (status_ == ProgramStatuses::PSTATUS::WAIT_FOR_ACTION_TIMER_STARTED_ENTR)
             {
-                Sprintln("BlinkMode::BLINK_SLOW");
-
+                // Sprintln("BlinkMode::BLINK_SLOW");
                 (*it)->setBlinkMode(BlinkMode::BLINK_SLOW);
                 (*it)->enable_blink();
             }
             else
             {
-                Sprintln("BlinkMode::BLINK_FAST");
-
+                // Sprintln("BlinkMode::BLINK_FAST");
                 (*it)->setBlinkMode(BlinkMode::BLINK_FAST);
                 (*it)->enable_blink(); /* code */
             }
@@ -95,7 +108,7 @@ void Program::WaitForActionEntrStart(bool extend)
             else
             {
                 (*it)->setBlinkMode(BlinkMode::BLINK_FAST);
-                (*it)->enable_blink(); /* code */
+                (*it)->enable_blink(); 
             }
             break;
 
@@ -129,14 +142,18 @@ void Program::WaitForActionEntrStart(bool extend)
 
 void Program::WaitForActionExitStart(bool extend)
 {
+    //Disable door switches
+    buttons[BID::DOOR_OPEN_SWITCH]->disable();
+    buttons[BID::DOOR_CLOSED_SWITCH]->disable();
+
     if (!extend)
     {
-        StartAlarm(waitForActionSeconds_);
+        StartTimer(waitForActionSeconds_);
         status_ = ProgramStatuses::PSTATUS::WAIT_FOR_ACTION_TIMER_STARTED_EXIT;
     }
     else
     {
-        StartAlarm(extendedWaitForActionSeconds_);
+        StartTimer(extendedWaitForActionSeconds_);
         status_ = ProgramStatuses::PSTATUS::EXTENDED_WAIT_FOR_ACTION_TIMER_STARTED_EXIT;
     }
 
@@ -152,17 +169,15 @@ void Program::WaitForActionExitStart(bool extend)
             (*it)->on();
             if (status_ == ProgramStatuses::PSTATUS::WAIT_FOR_ACTION_TIMER_STARTED_EXIT)
             {
-                Sprintln("BlinkMode::BLINK_SLOW");
-
+                // Sprintln("BlinkMode::BLINK_SLOW");
                 (*it)->setBlinkMode(BlinkMode::BLINK_SLOW);
                 (*it)->enable_blink();
             }
             else
             {
-                Sprintln("BlinkMode::BLINK_FAST");
-
+                // Sprintln("BlinkMode::BLINK_FAST");
                 (*it)->setBlinkMode(BlinkMode::BLINK_FAST);
-                (*it)->enable_blink(); /* code */
+                (*it)->enable_blink();
             }
 
             break;
@@ -199,13 +214,11 @@ void Program::WaitForActionExitStart(bool extend)
             // Sprintln("EXTRACT_AND_TURN_BTN_EXIT");
             (*it)->enable();
             break;
-
         // EXTRACT_NO_TURN_BTN_EXIT
         case 3:
             // Sprintln("EXTRACT_NO_TURN_BTN_EXIT");
             (*it)->enable();
             break;
-
         // TECHNOLOGIST_ORDER_BTN_EXIT
         // case 4:
         //     // Sprintln("TECHNOLOGIST_ORDER_BTN_EXIT");
@@ -218,9 +231,11 @@ void Program::WaitForActionExitStart(bool extend)
     }
 }
 
-// int Program::calcTimeReminingSecs(time_t start, time_t end)
-// {
-// }
+int Program::calcTimeReminingSecs(time_t start, time_t end)
+{
+    // TODO Develop this method!!
+    return 0;
+}
 
 void Program::SetTimeToRemoveCart(int timerRemoveCartInSeconds)
 {
@@ -232,10 +247,10 @@ void Program::SetTimeToRemoveCart(int timerRemoveCartInSeconds)
 
 bool Program::getState() { return state_; }
 
-void Program::StartAlarm(int seconds)
+void Program::StartTimer(int seconds)
 
 {
-    Sprintln("StartAlarm");
+    Sprintln("StartTimer()");
     alarmStartTime_ = now();
     alarmId_ = Alarm.timerOnce(seconds, timerCallbackPrg);
     // Sprintln(alarmId_);
@@ -243,7 +258,7 @@ void Program::StartAlarm(int seconds)
 }
 void Program::CancelTimer()
 {
-    Sprintln("Start alarm");
+    Sprintln("CancelTimer()");
     alarmCanceledTime_ = now();
     Alarm.disable(alarmId_);
     // Sprintln("CancelTimer - end\n");
@@ -255,42 +270,43 @@ void Program::processButtonPress(int pinNumber)
     {
         if ((*it)->isEnabled() && (*it)->getPinNumber() == pinNumber)
         {
-            // Sprint("PinNumber");
-            // Sprintln("TECHNOLOGIST_ORDER_BTN_ENTR");
-
-            // bool pressed = !digitalRead((*it)->getPinNumber());
-            // if (pressed)
-            // {
-            // (*it)->press();
             switch ((*it)->getId())
             {
             // NEW_CART_BTN_ENTR
             case 0:
-                Sprintln("NEW_CART_BTN_ENTR");
+                // Sprintln("NEW_CART_BTN_ENTR");
                 CancelTimer();
-                (*it)->clearPressed();
-                clearAllLightSignals();
                 buttons[BID::NEW_CART_BTN_ENTR]->disable();
-               StartProgram();
+                StartProgram();
+                (*it)->clearPressed();
                 break;
             // TECHNOLOGIST_ORDER_BTN_ENTR
             case 1:
-                Sprintln("TECHNOLOGIST_ORDER_BTN_ENTR");
+                // Sprintln("TECHNOLOGIST_ORDER_BTN_ENTR");
+                CancelTimer(); // for future use in case we come from timer started situation
+                (*it)->clearPressed();
+                lights[LID::GREEN_BTN_BOX_ENTR]->setBlinkMode(1);
+                lights[LID::GREEN_BTN_BOX_ENTR]->disable_blink();
+                lights[LID::GREEN_BTN_BOX_EXIT]->setBlinkMode(1);
+                lights[LID::GREEN_BTN_BOX_EXIT]->disable_blink();
+                buttons[BID::TECHNOLOGIST_ORDER_BTN_ENTR]->disable();
+                buttons[BID::TECHNOLOGIST_ORDER_BTN_EXIT]->disable();
+                StartProgram();
                 (*it)->clearPressed();
                 break;
             // EXTRACT_AND_TURN_BTN_EXIT
             case 2:
-                Sprintln("EXTRACT_AND_TURN_BTN_EXIT");
+                // Sprintln("EXTRACT_AND_TURN_BTN_EXIT");
                 CancelTimer();
-                (*it)->clearPressed();
                 clearAllLightSignals();
                 buttons[BID::EXTRACT_AND_TURN_BTN_EXIT]->disable();
                 buttons[BID::EXTRACT_NO_TURN_BTN_EXIT]->disable();
                 WaitForActionEntrStart(false);
+                (*it)->clearPressed();
                 break;
             // EXTRACT_NO_TURN_BTN_EXIT
             case 3:
-                Sprintln("EXTRACT_NO_TURN_BTN_EXIT");
+                // Sprintln("EXTRACT_NO_TURN_BTN_EXIT");
                 CancelTimer();
                 (*it)->clearPressed();
                 clearAllLightSignals();
@@ -300,21 +316,37 @@ void Program::processButtonPress(int pinNumber)
                 break;
             // TECHNOLOGIST_ORDER_BTN_EXIT
             case 4:
-                Sprintln("TECHNOLOGIST_ORDER_BTN_EXIT");
-                clearAllLightSignals();
-                CancelTimer();
+                // Sprintln("TECHNOLOGIST_ORDER_BTN_EXIT");
+                CancelTimer(); // for future use in case we come from timer started situation
                 (*it)->clearPressed();
+                lights[LID::GREEN_BTN_BOX_ENTR]->setBlinkMode(1);
+                lights[LID::GREEN_BTN_BOX_ENTR]->disable_blink();
+                lights[LID::GREEN_BTN_BOX_EXIT]->setBlinkMode(1);
+                lights[LID::GREEN_BTN_BOX_EXIT]->disable_blink();
+                buttons[BID::TECHNOLOGIST_ORDER_BTN_ENTR]->disable();
+                buttons[BID::TECHNOLOGIST_ORDER_BTN_EXIT]->disable();
+                StartProgram();
                 break;
             // TECHNOLOGIST_ORDER_BTN
             case 5:
-                Sprintln("TECHNOLOGIST_ORDER_BTN");
+                // Sprintln("TECHNOLOGIST_ORDER_BTN");
                 (*it)->clearPressed();
                 clearAllLightSignals();
-
+                CancelTimer(); // for future use in case we come from timer started situation
+                lights[LID::GREEN_ENTR_TOWER]->on();
+                lights[LID::GREEN_EXIT_TOWER]->on();
+                lights[LID::GREEN_BTN_BOX_ENTR]->setBlinkMode(2);
+                lights[LID::GREEN_BTN_BOX_ENTR]->enable_blink();
+                lights[LID::GREEN_BTN_BOX_EXIT]->setBlinkMode(2);
+                lights[LID::GREEN_BTN_BOX_EXIT]->enable_blink();
+                lights[LID::GREEN_BTN_BOX_ENTR]->on();
+                lights[LID::GREEN_BTN_BOX_EXIT]->on();
+                buttons[BID::TECHNOLOGIST_ORDER_BTN_ENTR]->enable();
+                buttons[BID::TECHNOLOGIST_ORDER_BTN_EXIT]->enable();
                 break;
             // TECHNOLOGIST_EMERGENCY_LIGHTS_BTN
             case 6:
-                Sprintln("TECHNOLOGIST_EMERGENCY_LIGHTS_BTN");
+                // Sprintln("TECHNOLOGIST_EMERGENCY_LIGHTS_BTN");
                 if (!emergency_)
                 {
                     CancelTimer();
@@ -325,15 +357,21 @@ void Program::processButtonPress(int pinNumber)
                 }else
                 {
                     emergency_ = false;
-                    clearAllLightSignals();
                     StartProgram();
                 }
                 (*it)->clearPressed();
                 break;
             // DOOR_OPEN_SWITCH
             case 7:
-                Sprintln("DOOR_OPEN_SWITCH");
-                /* code */
+                Sprintln("DOOR_OPEN_SWITCH pressed");
+                CancelTimer();
+                clearAllLightSignals();
+                (*it)->clearPressed();
+                break;
+            // DOOR_CLOSED_SWITCH
+            case 8:
+                Sprintln("DOOR_CLOSED_SWITCH pressed");
+                StartProgram();
                 (*it)->clearPressed();
                 break;
 

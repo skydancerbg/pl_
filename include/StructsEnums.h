@@ -55,7 +55,8 @@ enum BF
     TechnologistOrderCompleted,
     Emergency,
     ClearAllSignals,
-    DOOR_OPEN
+    DOOR_OPEN,
+    DOOR_CLOSED
 };
 }
 
@@ -70,7 +71,8 @@ enum BID
     TECHNOLOGIST_ORDER_BTN_EXIT,
     TECHNOLOGIST_ORDER_BTN,
     TECHNOLOGIST_EMERGENCY_LIGHTS_BTN,
-    DOOR_OPEN_SWITCH
+    DOOR_OPEN_SWITCH,
+    DOOR_CLOSED_SWITCH
 };
 }
 

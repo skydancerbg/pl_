@@ -16,8 +16,8 @@ GREEN_ENTR_TOWER                    |D27          TX2 D17|    YELLOW_BTN_BOX_EXI
 YELLOW_ENTR_TOWER                   |D14 PWM!!    RX2 D16|    GREEN_EXIT_TOWER 
 RED_ENTR_TOWER                      |D12              D4 |    YELLOW_EXIT_TOWER
                                     |GND              D0 |    RED_EXIT_TOWER
-DOOR_OPEN_SWITCH                    |D13              D2 |    
-                                    |D09 SD2          D15|    free
+DOOR_OPEN_SWITCH                    |D13              D2 |    ONBOARD_LED
+                                    |D09 SD2          D15|    DOOR_CLOSED_SWITCH
                                     |D10 SD3      SD1 D08|
                                     |D11 CMD      SD0 D07|
                                     |VIN 5V       CLK D06|
@@ -30,20 +30,20 @@ DOOR_OPEN_SWITCH                    |D13              D2 |
                                   GPIO  Input       Output	  Notes
 RED_EXIT_TOWER                    0	    pulled up	  OK	      outputs PWM signal at boot
                                   1	    TX pin	    OK	      debug output at boot
-                                  2	    OK	        OK	      connected to on-board LED
-BLUE_DOOR_OPEN                    3	    OK	        RX pin	  HIGH at boot
+ONBOARD_LED                       2	    OK	        OK	      connected to on-board LED
+BLUE_DOOR_OPEN                    3	    OK	        RX pin	HIGH at boot
 YELLOW_EXIT_TOWER                 4	    OK	        OK	
 GREEN_BTN_BOX_EXIT                5	    OK	        OK	      outputs PWM signal at boot
-                                  6	    x	          x	        connected to the integrated SPI flash
-                                  7	    x	          x	        connected to the integrated SPI flash
-                                  8	    x	          x	        connected to the integrated SPI flash
-                                  9	    x	          x	        connected to the integrated SPI flash
-                                  10	  x	          x	        connected to the integrated SPI flash
-                                  11	  x	          x	        connected to the integrated SPI flash
+                                  6	    x	              x	      connected to the integrated SPI flash
+                                  7	    x	              x	      connected to the integrated SPI flash
+                                  8	    x	              x	      connected to the integrated SPI flash
+                                  9	    x	              x	      connected to the integrated SPI flash
+                                  10    x               x	      connected to the integrated SPI flash
+                                  11    x	              x	      connected to the integrated SPI flash
 RED_ENTR_TOWER                    12	  OK          OK	      boot fail if pulled high
 DOOR_OPEN_SWITCH                  13	  OK          OK	      
 YELLOW_ENTR_TOWER                 14	  OK          OK	      outputs PWM signal at boot
-free                              15	  OK          OK	      outputs PWM signal at boot
+DOOR_CLOSED_SWITCH                15	  OK          OK	      outputs PWM signal at boot
 GREEN_EXIT_TOWER                  16	  OK          OK	      
 YELLOW_BTN_BOX_EXIT               17	  OK          OK	      
 EXTRACT_AND_TURN_BTN_EXIT         18	  OK          OK	      

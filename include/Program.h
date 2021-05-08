@@ -46,14 +46,14 @@ private:
     bool emergency_ = false;
     int ctrlUnit_;
     int function_;
-    int removeCartSeconds_ = 7;
+    int removeCartSeconds_ = 5;
     int removeCartPausedRemaining_;
     int waitForActionSeconds_ =10;
     int extendedWaitForActionSeconds_ =10;
     time_t alarmStartTime_, waitAlarmStartTime_, alarmCanceledTime_;
 
     AlarmID_t alarmId_;
-    void StartAlarm(int seconds);
+    void StartTimer(int seconds);
     int calcTimeReminingSecs(time_t start,time_t end);
 
 public:
@@ -89,7 +89,7 @@ public:
     void stopEmergencySignal();
 };
 
-extern void AlarmCallbackPrg();
+extern void timerCallbackPrg();
 extern vector<Program *> programs;
 
 #endif

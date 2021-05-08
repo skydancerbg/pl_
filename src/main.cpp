@@ -34,8 +34,8 @@ Program* program;
 // LightsTower::LightsTower(int id, lights, vector<int> towerlightIds, int workerResponseTime)
 // LightsTower lightsTowerEntr(0, lights,twr,30);
 
-#define NUM_BUTTONS 8
-const uint8_t BUTTON_PINS[NUM_BUTTONS] = {13, 18, 19, 22, 21, 23, 32, 33};
+#define NUM_BUTTONS 9
+const uint8_t BUTTON_PINS[NUM_BUTTONS] = {15, 13, 18, 19, 22, 21, 23, 32, 33};
 Bounce *debouncedBtns = new Bounce[NUM_BUTTONS];
 
 void setupButtons();

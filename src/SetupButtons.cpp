@@ -18,6 +18,7 @@ void setupButtons(){
   buttons.push_back(new Button ( {BID::TECHNOLOGIST_EMERGENCY_LIGHTS_BTN,22,CU::TECHNOLOGIST_CTRL_BOX, BF::Emergency}));
   
   buttons.push_back(new Button ( {BID::DOOR_OPEN_SWITCH,13,CU::TECHNOLOGIST_CTRL_BOX, BF::DOOR_OPEN}));
+  buttons.push_back(new Button ( {BID::DOOR_CLOSED_SWITCH,15,CU::TECHNOLOGIST_CTRL_BOX, BF::DOOR_CLOSED}));
 
 }
  
