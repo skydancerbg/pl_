@@ -362,17 +362,28 @@ void Program::processButtonPress(int pinNumber)
                 (*it)->clearPressed();
                 break;
             // DOOR_OPEN_SWITCH
+            // !Process door open and door closed with a single button
             case 7:
                 Sprintln("DOOR_OPEN_SWITCH pressed");
+                if (!doorOpen_)
+                {
                 CancelTimer();
                 clearAllLightSignals();
+                doorOpen_ = true;
                 (*it)->clearPressed();
+                }else
+                {
+                // Sprintln("DOOR_CLOSED_SWITCH pressed");
+                StartProgram();
+                doorOpen_ = false;
+                (*it)->clearPressed();
+                }             
                 break;
             // DOOR_CLOSED_SWITCH
             case 8:
-                Sprintln("DOOR_CLOSED_SWITCH pressed");
-                StartProgram();
-                (*it)->clearPressed();
+                // Sprintln("DOOR_CLOSED_SWITCH pressed");
+                // StartProgram();
+                // (*it)->clearPressed();
                 break;
 
             default:

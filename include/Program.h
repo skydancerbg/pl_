@@ -44,6 +44,7 @@ private:
     ProgramStatuses::PSTATUS status_;  
     bool blink_enable_ = false; // false - OFF, true - ON
     bool emergency_ = false;
+    bool doorOpen_= false;
     int ctrlUnit_;
     int function_;
     int removeCartSeconds_ = 5;
